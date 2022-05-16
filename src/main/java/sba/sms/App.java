@@ -31,7 +31,10 @@ public class App {
 
     public static void main(String[] args) {
 
+
+
         CommandLine.addData();
+
 
         Scanner input = new Scanner(System.in);
         int userInput;
