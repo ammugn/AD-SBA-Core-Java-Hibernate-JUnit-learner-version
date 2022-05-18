@@ -62,7 +62,7 @@ public class StudentService implements StudentI {
            Query q = session.createQuery("from Student where email = :email and password= :password", Student.class);
             q.setParameter("email", email);
             q.setParameter("password", password);
-            System.out.println(q.uniqueResult());
+
             if(q.uniqueResult()==null) {
                 isValid = false;
             //    log.info("User id and/or  password invalid!");
@@ -87,13 +87,32 @@ public class StudentService implements StudentI {
 
         Session s = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
+        boolean isEnrolled=false;
         try {
             tx = s.beginTransaction();
             Student student = s.get(Student.class, email);
             Course c = s.get(Course.class,courseId);
-            c.addStudent(student);
-            s.merge(c);
-            tx.commit();
+            //modification added to make sure student is not added twice to same course
+            List<Course> lc=student.getCourses();
+            for(Course course:lc)
+            {
+
+                if(course.getId()==courseId)
+                { isEnrolled=true;
+                    break;
+                }
+                else
+                    isEnrolled=false;
+            }
+            if(isEnrolled) {
+                System.out.println("Student already enrolled in this course");
+            }
+            else {
+
+                c.addStudent(student);
+                s.merge(c);
+                tx.commit();
+            }
         } catch (HibernateException exception) {
             if (tx!=null) tx.rollback();
             exception.printStackTrace();
@@ -114,8 +133,6 @@ public class StudentService implements StudentI {
                     "join student_courses as sc on c.id = sc.courses_id " +
                     "join Student as s on s.email = sc.student_email " +
                     "where s.email = :id",Course.class);
-
-
             q.setParameter("id",email);
             courseList = q.getResultList();
             tx.commit();

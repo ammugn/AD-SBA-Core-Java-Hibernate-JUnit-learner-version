@@ -56,7 +56,10 @@ public class App {
                         List<Course> courseList = courseService.getAllCourses();
                         System.out.printf("All courses:%n-----------------------------%n");
                         System.out.printf("%-2s | %-20s | %s%n", "ID", "Course", "Instructor");
-                        if (courseList.isEmpty()) System.out.printf("No courses to view%n");
+                        if (courseList.isEmpty())
+                        {
+                            System.out.printf("No courses to view%n");
+                        }
                         for (Course course : courseList) {
                             System.out.printf("%-2d | %-20s | %s%n", course.getId(), course.getName(), course.getInstructor());
                         }
@@ -81,11 +84,15 @@ public class App {
 
     private static void printStudentCourses(String email) {
         System.out.printf("%s courses:%n-----------------------------%n", email);
+
+        List<Course> userCourses = studentService.getStudentCourses(email);//line added
+        if (userCourses.isEmpty()) System.out.printf("No courses to view%n");//line added
+        else {
         System.out.printf("%-2s | %-20s | %s%n", "ID", "Course", "Instructor");
-        List<Course> userCourses = studentService.getStudentCourses(email);
-        if (userCourses.isEmpty()) System.out.printf("No courses to view%n");
+        //List<Course> userCourses = studentService.getStudentCourses(email);
+     //   if (userCourses.isEmpty()) System.out.printf("No courses to view%n");
         for (Course course : userCourses) {
             System.out.printf("%-2d | %-20s | %s%n", course.getId(), course.getName(), course.getInstructor());
         }
-    }
+    }}
 }
