@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CourseServiceTest {
+class CourseServiceTest {
     static CourseService courseService;
     static Course testcourse;
     @BeforeAll
