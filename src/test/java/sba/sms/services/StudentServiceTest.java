@@ -44,23 +44,21 @@ class StudentServiceTest {
     @Order(2)
     void createStudent(){
         int size=studentService.getAllStudents().size();
-       // Student actual = new Student("testing@gmail.com", "test case","testpassword");
         studentService.createStudent(actual);
         int newsize=studentService.getAllStudents().size();
         assertThat(actual).extracting(Student::getName).isEqualTo("test case");
-        assertThat(newsize).isEqualTo(size+1);
+        assertThat(newsize).isEqualTo((size+1));
+
     }
     @Test
     void getStudentByEmail(){
-      //  Student actual = new Student("testing@gmail.com", "test case","testpassword");
-       // studentService.createStudent(actual);
+
         studentService.getStudentByEmail("testing@gmail.com");
         assertThat(actual).extracting(Student::getName).isEqualTo("test case");
        // assertThat(studentService.getStudentByEmail("reema@gmail.com")).extracting(Student::getEmail).isEqualTo("reema@gmail.com");
     }
     @Test
     public void validateStudent(){
-      //  Student actual = new Student("testing@gmail.com", "test case","testpassword");
         studentService.validateStudent("testing@gmail.com","testpassword");
         assertThat(actual).extracting(Student::getEmail).isEqualTo("testing@gmail.com");
         assertThat(actual).extracting(Student::getPassword).isEqualTo("testpassword");

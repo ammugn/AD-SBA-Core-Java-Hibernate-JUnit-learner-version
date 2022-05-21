@@ -144,4 +144,24 @@ public class StudentService implements StudentI {
         }
         return courseList;
     }
+    public boolean removeStudent(Student student){
+        Session s = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = s.beginTransaction();
+            if(student.getEmail() == null) throw new RuntimeException("ID equals zero");
+            s.remove(student);
+            tx.commit();
+            return true;
+        } catch (HibernateException exception) {
+            if (tx!=null) tx.rollback();
+            exception.printStackTrace();
+        } finally {
+            s.close();
+        }
+
+        return false;
+
+    }
 }
